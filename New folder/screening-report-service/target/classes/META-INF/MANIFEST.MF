@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Implementation-Title: screening-report-service
+Implementation-Version: 0.0.1-SNAPSHOT
+Built-By: Don't Melt The CPU
+Implementation-Vendor-Id: com.revature.screenforce
+Build-Jdk: 1.8.0_221
+Implementation-URL: https://projects.spring.io/spring-boot/#/spring-bo
+ ot-starter-parent/screening-report-service
+Created-By: Maven Integration for Eclipse
+
