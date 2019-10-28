@@ -24,6 +24,7 @@ import com.revature.screenforce.beans.SkillType;
 import com.revature.screenforce.beans.SoftSkillViolation;
 import com.revature.screenforce.beans.ViolationType;
 import com.revature.screenforce.beans.Weight;
+import com.revature.screenforce.models.FullReportModel;
 
 @RestController
 @CrossOrigin
@@ -78,6 +79,10 @@ public class ReportsController {
 	@GetMapping(value="/weight", produces= MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody List<Weight> getAllWeight(){
 		return this.reportsService.testGetAllWeight();
+	}
+	@GetMapping(value="/frm", produces= MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody FullReportModel getFullReport(){
+		return this.reportsService.testFullReport();
 	}
 
 

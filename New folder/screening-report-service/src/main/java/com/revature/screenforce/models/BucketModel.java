@@ -10,7 +10,7 @@ public class BucketModel {
 	//The name of this bucket
 	String bucketName;
 	//The score the Candidate recieved on this bucket
-	Double weightVaule;
+	int weightVaule;
 	//A list of all the Questions Asked relating to THIS bucket
 	List<QuestionModel> questionAsked;
 	//skill type number to the name
@@ -39,10 +39,10 @@ public class BucketModel {
 	public void setBucketName(String bucketName) {
 		this.bucketName = bucketName;
 	}
-	public Double getWeightVaule() {
+	public int getWeightVaule() {
 		return weightVaule;
 	}
-	public void setWeightVaule(Double weightVaule) {
+	public void setWeightVaule(int weightVaule) {
 		this.weightVaule = weightVaule;
 	}
 	public List<QuestionModel> getQuestionAsked() {

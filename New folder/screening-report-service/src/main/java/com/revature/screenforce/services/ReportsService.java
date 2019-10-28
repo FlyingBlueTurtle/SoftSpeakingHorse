@@ -30,6 +30,7 @@ import com.revature.screenforce.beans.Weight;
 import com.revature.screenforce.feign.*;
 import com.revature.screenforce.models.BucketModel;
 import com.revature.screenforce.models.FullReportModel;
+import com.revature.screenforce.models.QuestionModel;
 import com.revature.screenforce.util.Time;
 
 
@@ -126,16 +127,42 @@ public class ReportsService {
 		}
 		
 		List<BucketModel> bucketTested = new ArrayList<BucketModel>();
+		List<QuestionScore> qs = testGetScoresByScreeningId(new Integer(op.getScreeningId()));
 		
-		List<QuestionScore> qs = testGetAllQuestionScore();
-		for(QuestionScore q : qs) {
-			if(q.getScreening().getScreeningId()==op.getScreeningId()) {
+		for(QuestionScore q:qs) {
+			boolean bucketExist = false;
+			for(BucketModel b:bucketTested ) {
 				
+				//If bucket exist, just add question into bucket
+				if(b.getBucketId()==q.getBucketId()) {
+					bucketExist=true;
+					List<QuestionModel> qmlist = b.getQuestionAsked();
+					QuestionModel qm = new QuestionModel(feignquestion.getQuestionById(new Integer(q.getQuestionId())));
+					qm.setScore(q.getScore());
+					qm.setQuestionComment(q.getComment());
+					qmlist.add(qm);
+					b.setQuestionAsked(qmlist);
+				}
+			}
+			//if bucket doesn't exist, add bucket and question
+			if( bucketExist == false) {
+				BucketModel in = new BucketModel(feignbucket.getBucketByBucketId(new Integer(q.getBucketId())));
+				Weight w = feignweight.getWeightFromIds(new Integer(op.getSkillType()), new Integer(q.getBucketId()));
+				in.setWeightVaule(w.getWeightValue());
+				
+				//add Question 
+				QuestionModel qm = new QuestionModel(feignquestion.getQuestionById(q.getQuestionId()));
+				qm.setScore(q.getScore());
+				qm.setQuestionComment(q.getComment());
+				List<QuestionModel> qmlist = new ArrayList<QuestionModel>();
+				qmlist.add(qm);
+				in.setQuestionAsked(qmlist);
+				bucketTested.add(in);
 			}
 		}
 		
 		out.setBucketTested(bucketTested);
-		return null;
+		return out;
 	}
 	
 //	public List<String> getAllEmails(String email){
