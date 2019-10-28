@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.stereotype.Service;
 
+
 import com.google.gson.Gson;
 import com.revature.screenforce.beans.Bucket;
 import com.revature.screenforce.beans.Question;
@@ -25,13 +26,13 @@ import com.revature.screenforce.beans.Screening;
 import com.revature.screenforce.beans.SkillType;
 import com.revature.screenforce.beans.SoftSkillViolation;
 import com.revature.screenforce.beans.ViolationType;
+import com.revature.screenforce.beans.Weight;
 import com.revature.screenforce.feign.*;
-import com.revature.screenforce.models.ScreenerInfoModel;
+import com.revature.screenforce.models.BucketModel;
 import com.revature.screenforce.models.FullReportModel;
 import com.revature.screenforce.util.Time;
 
 
-@EnableFeignClients
 @Service
 public class ReportsService {
 	
@@ -44,29 +45,99 @@ public class ReportsService {
 	@Autowired feignSoftSkillViolation feignsoftskillviolation;
 	@Autowired feignViolationType feignviolationtype;
 	@Autowired feignWeight feignweight;
+
+//	private Map<String, Double> scoresByQuestion = new HashMap<>();
+//	private Map<String, Integer> numScoresPerQuestion = new HashMap<>();
+//	private Map<String, Double> top5HardestQuestions = new TreeMap<>();
+//	private ArrayList<String> questionKeys = new ArrayList<>();
+//	private List<SoftSkillViolation> softSkillViolations = new ArrayList<>();
+//	private List<ViolationType> violationTypes = new ArrayList<>();
+//
+//	private Map<String, List<Bucket>> bucketsBySkillType = new HashMap<>();
+//	private Map<String, Double> scoresByDescription = new HashMap<>();
+//	private Map<String, Integer> numScoresPerDescription = new HashMap<>();
+//	private Map<String, Double> scoresBySkillType = new HashMap<>();
+//	private Map<String, Integer> numScoresPerSkillType = new HashMap<>();
+//
+//	private Map<String, Integer> numViolationsByType = new HashMap<>();
+//
+//	int numScheduledScreenings = 0;
 	
-	private Map<String, Double> scoresByQuestion = new HashMap<>();
-	private Map<String, Integer> numScoresPerQuestion = new HashMap<>();
-	private Map<String, Double> top5HardestQuestions = new TreeMap<>();
-	private ArrayList<String> questionKeys = new ArrayList<>();
-	private List<SoftSkillViolation> softSkillViolations = new ArrayList<>();
-	private List<ViolationType> violationTypes = new ArrayList<>();
 	
-	private Map<String, List<Bucket>> bucketsBySkillType = new HashMap<>();
-	private Map<String, Double> scoresByDescription = new HashMap<>();
-	private Map<String, Integer> numScoresPerDescription = new HashMap<>();
-	private Map<String, Double> scoresBySkillType = new HashMap<>();
-	private Map<String, Integer> numScoresPerSkillType = new HashMap<>();
-	
-	private Map<String, Integer> numViolationsByType = new HashMap<>();
-	
-	int numScheduledScreenings = 0;
-	
-	
-	public void testGetAllBuckets() {
-		List<Bucket> testbucket = this.feignbucket.getBucket();
+	public List<Bucket> testGetAllBuckets() {
+		List<Bucket> testbucket = feignbucket.getBucket();
 		System.out.println(testbucket);
+		return feignbucket.getBucket();
 	}
+	public List<Question> testGetAllQuestion(){
+		return feignquestion.getQuestions();
+	}
+	
+	public List<QuestionScore> testGetAllQuestionScore(){
+		return feignquestionscore.getSimpleQuestionScores();
+	}
+	public List<QuestionScore> testGetScoresByScreeningId(Integer id){
+		return feignquestionscore.getScoresByScreeningId(id);
+	}
+
+	public List<ScheduledScreening> testGetAllScheduledScreening(){
+		return feignscheduledscreening.getAllScheduledScreenings();
+	}
+	public List<Screening> testGetAllScreening(){
+		return  feignscreening.getAllScreening();
+	}
+	
+	public List<SkillType> testGetAllSkillType(){
+		return  feignskilltype.getSkills();
+	}
+	
+	
+	
+	public List<SoftSkillViolation> testGetAllSoftSkillViolation(){
+		return  feignsoftskillviolation.getSoftSkillViolations();
+	}
+	
+	public List<ViolationType> testGetAllViolationType(){
+		return  feignviolationtype.getViolationTypes();
+	}
+
+	public List<Weight> testGetAllWeight(){
+		return  feignweight.getWeights();
+	}
+
+	public FullReportModel testFullReport() {
+		FullReportModel out = new FullReportModel();
+		
+		List<Screening> test = testGetAllScreening();
+		List<SkillType> st = testGetAllSkillType();
+		Screening op = test.get(0);
+		out.setInternal_id(op.getScreeningId());
+		out.setScreener_id(op.getScreenerId());
+		out.setCan(op.getScheduledScreening().getCandidate());
+		out.setScheduleDate(op.getScheduledScreening().getScheduledDate());
+		out.setAboutMeCommentary(op.getAboutMeCommentary());
+		out.setGeneralCommentary(op.getGeneralCommentary());
+		out.setSoftSkillCommentary(op.getSoftSkillCommentary());
+		out.setSoftSkillVerdict(op.getSoftSkillsVerdict());
+		for( SkillType s : st) {
+			if(s.getSkillTypeId()==op.getSkillType()) {
+				out.setSkillType(s.getTitle());
+			}
+		}
+		
+		List<BucketModel> bucketTested = new ArrayList<BucketModel>();
+		
+		List<QuestionScore> qs = testGetAllQuestionScore();
+		for(QuestionScore q : qs) {
+			if(q.getScreening().getScreeningId()==op.getScreeningId()) {
+				
+			}
+		}
+		
+		out.setBucketTested(bucketTested);
+		return null;
+	}
+	
 //	public List<String> getAllEmails(String email){
 //		List<Screener> screenerList = screenerRepository.findAllByEmailContainingIgnoreCase(email);
 //		List<String> emailList = new ArrayList<>();

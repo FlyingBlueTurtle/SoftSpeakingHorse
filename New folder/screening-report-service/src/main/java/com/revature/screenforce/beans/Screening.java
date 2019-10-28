@@ -1,14 +1,14 @@
 package com.revature.screenforce.beans;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+//import io.swagger.annotations.ApiModel;
+//import io.swagger.annotations.ApiModelProperty;
+//
+//import javax.persistence.*;
 
-import javax.persistence.*;
-
-import java.time.LocalDate;
+//import java.time.LocalDate;
 import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+//import java.util.List;
+//import java.util.Objects;
 
 /**
  *  The POJO for the Screening

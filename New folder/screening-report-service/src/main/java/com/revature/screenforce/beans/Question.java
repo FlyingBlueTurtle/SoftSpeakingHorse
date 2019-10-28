@@ -1,12 +1,12 @@
 package com.revature.screenforce.beans;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-
-import javax.persistence.*;
-import java.io.Serializable;
-import java.util.List;
-import java.util.Objects;
+//import io.swagger.annotations.ApiModel;
+//import io.swagger.annotations.ApiModelProperty;
+//
+//import javax.persistence.*;
+//import java.io.Serializable;
+//import java.util.List;
+//import java.util.Objects;
 
 /**
  *  The POJO for the Question
